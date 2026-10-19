@@ -91,7 +91,7 @@ assert.equal(cards.length,5);
 assert.deepEqual(cards.map(c=>c.children[1].textContent),['3 / 5','4 / 4','2 / 55','16 / 32','5 / 40']);
 experienced.visit(0);
 assert(experienced.element('story').textContent.includes('restored relay'),'Prior game progress affects the atlas');
-assert(experienced.element('world-mood').textContent.includes('history'));
+assert(experienced.element('world-mood').textContent.includes('constellation'));
 experienced.click('copy-report');
 assert(experienced.copies[0].includes('Glass Observatory'));
 experienced.click('refresh');

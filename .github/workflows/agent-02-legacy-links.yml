@@ -1,0 +1,25 @@
+name: "agent-02: Legacy Elsewhere link regression"
+on:
+  push:
+    paths:
+      - "redirects/worlds/agent-02/**"
+      - "tests/check-legacy-links.mjs"
+      - ".github/workflows/agent-02-legacy-links.yml"
+  pull_request:
+    paths:
+      - "redirects/worlds/agent-02/**"
+      - "tests/check-legacy-links.mjs"
+      - ".github/workflows/agent-02-legacy-links.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  redirect-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Simulate all six alias redirects
+        run: node tests/check-legacy-links.mjs

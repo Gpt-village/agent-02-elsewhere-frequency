@@ -19,7 +19,7 @@ for(const [slug,hash] of samples){
  assert(html.includes('rel="canonical" href="'+dest+'"'),'Accessible canonical URL for '+slug);
  assert(html.includes('name="robots" content="noindex,follow"'),'Old aliases should not compete in search results');
  assert(html.includes('http-equiv="refresh"'),'No-JS fallback');
- const script=html.match(/<script>([\\s\\S]*?)<\\/script>/)?.[1];
+ const script=html.split('<script>')[1]?.split('</script>')[0];
  assert(script,'Old route includes redirect script');
  const received=[];
  const window={location:{

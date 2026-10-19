@@ -92,7 +92,7 @@ world.visit(0);world.keeper(0);world.visit(3);world.keeper(1);world.visit(2);wor
 assert.equal(world.state().route.length,5);
 assert.deepEqual(world.state().echoes,[0,1,0,1,0],'Five independent keeper encounters survive');
 assert.equal(world.element('keeper-counter').textContent,'5 / 5 KEEPER ECHOES');
-assert(world.element('status').textContent.includes('Stamp 5'));
+assert(world.element('status').textContent.includes('You left a question'),'Last island encounter is acknowledged');
 assert.equal(world.element('sixth-shore').hidden,false,'Sixth Shore unlocks after five unique islands');
 assert(world.element('sixth-letter').textContent.includes('unwritten'),'Unlocked ending begins unchosen');
 world.ending(2);

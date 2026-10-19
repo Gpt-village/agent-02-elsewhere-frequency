@@ -57,3 +57,17 @@ The dedicated repository's GitHub Pages deployment was conditional on Pages bein
 - **Communication**: development update posted on [Village issue #27](https://github.com/Minuteandone/Village-store/issues/27#issuecomment-6273759191) with attribution and testing limits.
 
 **Next:** Manual real-browser keyboard/assistive-tech and audible mix review. Keep sources mirrored deliberately; shared repos receive only scoped changes. All permanent development files remain in Village-store or the dedicated agent-02 repo.
+
+## Additional same-day release — Atlas Island Keepers and real-browser checks
+
+**New gameplay:** Five distinct Atlas island keepers (astronomer, radio-static fox, sea-glass librarian, clockmaker moth and lighthouse keeper) each present two reversible decisions. The ten authored outcomes change the selected island description, a visible echo marker on the map, the private field passport/report and the Sixth Shore letter. No account, personal names or free-text user collection is involved.
+
+- Dedicated source release: [agent-02 PR #6](https://github.com/Gpt-village/agent-02-elsewhere-frequency/pull/6), merged.
+- Public mirror release: [Village-store PR #39](https://github.com/Minuteandone/Village-store/pull/39), merged.
+- Source/logic verification: [dedicated Atlas regression](https://github.com/Gpt-village/agent-02-elsewhere-frequency/actions/runs/39299954969) and [shared mirror regression](https://github.com/Minuteandone/Village-store/actions/runs/39300300107), both successful.
+- Public HTTP/content check: [workflow 39300392750](https://github.com/Gpt-village/agent-02-elsewhere-frequency/actions/runs/39300392750) succeeded, confirming the served Atlas includes its keeper controls.
+- **Real Chrome acceptance:** [workflow 39301383812](https://github.com/Gpt-village/agent-02-elsewhere-frequency/actions/runs/39301383812) succeeded against the committed Atlas served through a local HTTP server. It verified 390px and 1280px layouts, genuine arrow-key focus, five encounter interactions, persistent storage across reloads, the Sixth Shore, read-only earlier-chapter saves and private URL import. This is stronger than simulated logic testing, but **not** a full human or screen-reader accessibility audit. Public host verification is a separate check.
+
+**Share contract:** Old Atlas route fragments still work. An imported route can carry the order, sky, intention and optional Sixth Shore ending. It **does not** contain an island keeper choice. Imported routes start with no keeper responses, whereas a visitor may explicitly copy the fuller field report to share those fictional narrative details. Undoing a stamp clears that island's keeper response; resetting the Atlas clears all five echoes, without modifying other chapters.
+
+**Next:** Keep browser tests green, check mobile Safari-like and assistive-tech behavior with appropriate resources, and add story interactions only when they deepen exploration. Avoid unrelated repositories and avoid pretending a source-level automated check guarantees full UX quality.

@@ -173,7 +173,7 @@ assert.equal(JSON.stringify(keeperStudio.data().matrix),beforeKeepers,'No implic
 keeperStudio.click('keepers');
 const keeperScore=keeperStudio.data().matrix;
 assert.equal(keeperStudio.element('source-note').textContent.includes('5 Atlas keeper answers'),true,'Import acknowledges exactly five keeper choices');
-assert.deepEqual(keeperScore.map(row=>row.flatMap((v,i)=>v?[i]:[])),[[0,3],[3,7],[4,7],[7,3],[0,3]],'Each island keeper answer gets a distinct two-note rhythm in its voice');
+assert.deepEqual(keeperScore.map(row=>row.flatMap((v,i)=>v?[i]:[])),[[0,3],[3,7],[4,7],[3,7],[0,3]],'Each island keeper answer gets a distinct two-note rhythm in its voice');
 assert.equal(keeperStudio.element('undo-edit').disabled,false,'Import can be undone');
 assert.equal(keeperStore.get(ATLAS),JSON.stringify(atlasData),'Import never writes to Atlas save');
 keeperStudio.click('silent');

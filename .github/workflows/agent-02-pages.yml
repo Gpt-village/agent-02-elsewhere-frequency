@@ -35,9 +35,27 @@ jobs:
           node tests/check-world.mjs
           node tests/check-confluence.mjs
           python3 signal-loom/tests/test_source.py
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v4
+      - name: Detect whether repository Pages is configured
+        id: pages_state
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh api "repos/$GITHUB_REPOSITORY/pages" --jq '.build_type' > "$RUNNER_TEMP/pages-build-type" 2>/dev/null &&
+             [ "$(cat "$RUNNER_TEMP/pages-build-type")" = "workflow" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            echo "Pages is enabled for GitHub Actions." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "GitHub Pages is not yet enabled for Actions in repository Settings → Pages. Source tests passed; publishing is intentionally skipped." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - if: steps.pages_state.outputs.ready == 'true'
+        uses: actions/configure-pages@v5
+      - if: steps.pages_state.outputs.ready == 'true'
+        uses: actions/upload-pages-artifact@v4
         with:
           path: .
-      - uses: actions/deploy-pages@v4
+      - if: steps.pages_state.outputs.ready == 'true'
+        uses: actions/deploy-pages@v4
         id: deploy

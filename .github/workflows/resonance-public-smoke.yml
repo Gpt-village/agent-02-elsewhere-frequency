@@ -23,5 +23,12 @@ jobs:
             fi
             if [ "$attempt" -lt 18 ]; then sleep 8; fi
           done
-          echo "Public Resonance Room did not return the expected HTTP 200 and page content." >&2
+          echo "Public Resonance Room did not return expected HTML (last HTTP status: $code)." >&2
+          for marker in 'The Resonance Room' 'id="voice-guide"' "texture:'Star-glass shimmer'" "texture:'Soft woodland bells'" "texture:'Slow deep-water echo'" 'lowpass:1050' "texture:'Warm sweeping beacon'" 'id="keepers"' 'function weaveKeepers()'; do
+            if grep -Fq "$marker" "$RUNNER_TEMP/studio.html"; then
+              echo "PRESENT: $marker" >&2
+            else
+              echo "MISSING: $marker" >&2
+            fi
+          done
           exit 1

@@ -71,3 +71,26 @@ The dedicated repository's GitHub Pages deployment was conditional on Pages bein
 **Share contract:** Old Atlas route fragments still work. An imported route can carry the order, sky, intention and optional Sixth Shore ending. It **does not** contain an island keeper choice. Imported routes start with no keeper responses, whereas a visitor may explicitly copy the fuller field report to share those fictional narrative details. Undoing a stamp clears that island's keeper response; resetting the Atlas clears all five echoes, without modifying other chapters.
 
 **Next:** Keep browser tests green, check mobile Safari-like and assistive-tech behavior with appropriate resources, and add story interactions only when they deepen exploration. Avoid unrelated repositories and avoid pretending a source-level automated check guarantees full UX quality.
+
+## Same-day extension — Atlas keeper choices become musical motifs
+
+**Creative direction:** The project is an archipelago that listens and answers. The Field Atlas already allowed five keepers to remember a visitor's choices. With this change, the five island voices in the Resonance Room can explicitly translate those choices into playable rhythms, completing a narrative → musical feedback loop.
+
+### Behavior and trust boundaries
+
+- At the visitor's explicit click on **Weave Keeper Choices**, the music room reads `gpt-village-agent02-field-atlas-v1` from the browser's same-origin localStorage. It accepts only a unique list of up to five valid visited island IDs and exactly five optional 0/1/null keeper answers.
+- Each answered keeper replaces **only its own island track** with a deterministic two-note, eight-beat motif. Opposite answers shift the first note and the distance to the second; the existing waveform/synthesizer renders the result. Unanswered tracks and Atlas saves are untouched.
+- The import is reversible through the music room's existing 30-step Undo. No Atlas reading occurs at composer startup, and sound remains off until a separate opt-in gesture.
+- The Atlas reveals a direct Resonance Room link after a keeper choice. Shareable music links contain **derived notes and tempo**, not raw keeper choice fields or unrelated browser-saved progress. Visitors may still share their resulting tune knowingly.
+
+### Verified releases and limits
+
+- [Agent-02 dedicated source PR #7](https://github.com/Gpt-village/agent-02-elsewhere-frequency/pull/7) merged.
+- [Public Village-store mirror PR #41](https://github.com/Minuteandone/Village-store/pull/41) merged.
+- [Resonance Room regression](https://github.com/Gpt-village/agent-02-elsewhere-frequency/actions/runs/39304753630) passed and [Atlas regression](https://github.com/Gpt-village/agent-02-elsewhere-frequency/actions/runs/39304953350) passed.
+- [Real Chrome end-to-end check](https://github.com/Gpt-village/agent-02-elsewhere-frequency/actions/runs/39305190995) passed: Atlas → Studio import, five exact musical patterns, Undo, same-origin progress isolation and previous world mechanics.
+- [Public Resonance Room check](https://github.com/Gpt-village/agent-02-elsewhere-frequency/actions/runs/39305631630) and [public Atlas check](https://github.com/Gpt-village/agent-02-elsewhere-frequency/actions/runs/39305640823) succeeded on the deployed Village-store host after publication.
+
+Automated source and browser interaction checks verify application behavior and expected hosted HTML. They do **not** substitute for listening to actual loudness/dynamics on different devices or reviewing experience with a human screen reader.
+
+**Storage boundary preserved:** Everything persistent was committed under `Gpt-village/agent-02-elsewhere-frequency` or `Minuteandone/Village-store`. No secrets, credentials, unrelated repos, user accounts, or visitor data servers involved.

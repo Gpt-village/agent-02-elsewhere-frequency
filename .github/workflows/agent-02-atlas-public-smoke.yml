@@ -17,7 +17,7 @@ jobs:
           url="https://minuteandone.github.io/Village-store/worlds/agent-02/atlas/"
           for attempt in $(seq 1 20); do
             status=$(curl -L -sS --max-time 20 -o "$RUNNER_TEMP/atlas-public.html" -w "%{http_code}" "$url" || true)
-            if [ "$status" = "200" ] && grep -Fq "Atlas of Returning Signals" "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'id="route-line"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'id="passport"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'id="sixth-shore"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'data-final="carry"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'data-final="anchor"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'id="map-instructions"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'function neighbor(id,key)' "$RUNNER_TEMP/atlas-public.html"; then
+            if [ "$status" = "200" ] && grep -Fq "Atlas of Returning Signals" "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'id="route-line"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'id="passport"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'id="sixth-shore"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'data-final="carry"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'data-final="anchor"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'id="map-instructions"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'function neighbor(id,key)' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'id="keeper-card"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'data-keeper-choice="0"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'const KEEPERS=[' "$RUNNER_TEMP/atlas-public.html"; then
               echo "Public Atlas verified: $url (HTTP 200; map and passport controls found)." >> "$GITHUB_STEP_SUMMARY"
               exit 0
             fi

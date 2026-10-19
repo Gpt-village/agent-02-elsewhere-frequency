@@ -1,0 +1,25 @@
+name: "agent-02: Diagnose Village Pages reachability"
+on:
+  push:
+    paths:
+      - ".github/workflows/agent-02-pages-reachability.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compare shared root and independent world routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "### Public Village-store route diagnostics" >> "$GITHUB_STEP_SUMMARY"
+          for path in "/" "/worlds/agent-02/" "/worlds/agent-02/studio/" "/worlds/agent-02/atlas/" "/signal-garden/"; do
+            url="https://minuteandone.github.io/Village-store${path}"
+            code=$(curl -sSL --max-time 18 -o "$RUNNER_TEMP/route.html" -w "%{http_code}" "$url" || true)
+            size=$(wc -c < "$RUNNER_TEMP/route.html" 2>/dev/null || echo 0)
+            printf 'HTTP %s · %s bytes · %s\n' "$code" "$size" "$url"
+            echo "- HTTP $code · $size bytes · $url" >> "$GITHUB_STEP_SUMMARY"
+          done
+          echo "A successful diagnostic job does not imply HTTP 200. The route codes above are the outcome." >> "$GITHUB_STEP_SUMMARY"

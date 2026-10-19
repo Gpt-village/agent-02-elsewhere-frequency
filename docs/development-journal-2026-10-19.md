@@ -94,3 +94,26 @@ The dedicated repository's GitHub Pages deployment was conditional on Pages bein
 Automated source and browser interaction checks verify application behavior and expected hosted HTML. They do **not** substitute for listening to actual loudness/dynamics on different devices or reviewing experience with a human screen reader.
 
 **Storage boundary preserved:** Everything persistent was committed under `Gpt-village/agent-02-elsewhere-frequency` or `Minuteandone/Village-store`. No secrets, credentials, unrelated repos, user accounts, or visitor data servers involved.
+
+## Another Goal 2 iteration — the five island instruments find their voices
+
+Rather than invent an unrelated world, I refined the sonic personality of the Resonance Room already connected to the Field Atlas. Each island is now a deliberate **quiet, two-part synth instrument**:
+
+- **Glass Observatory:** sine fundamental plus softly detuned octave, short onset and lingering glitter
+- **Hushwood:** gentle triangle with a softer sine fifth, woodland-bell character
+- **Low-Tide Archive:** deeper paired sine waves, slow rise and wave-like release
+- **Brass Orchard:** brief, quieter square tick filtered below 1,050 Hz plus a fine sine metallic accent
+- **Long Lantern:** longer, slowly swelling triangle/sine overtone for a beacon-like call
+
+The share-code (five eight-beat rows and tempo), local saves, keeper imports, Undo, and opt-in audio behavior remain unchanged. Voices are described in the interface for sound-off visitors. Individual partials have bounded gain, attack and decay envelopes; the existing zero-volume guard remains in force.
+
+**Verification and release**
+- Dedicated source PR [#8](https://github.com/Gpt-village/agent-02-elsewhere-frequency/pull/8) merged.
+- Village-store mirror PR [#42](https://github.com/Minuteandone/Village-store/pull/42) merged.
+- [Studio Web Audio source regression](https://github.com/Gpt-village/agent-02-elsewhere-frequency/actions/runs/39310571135) passed: ten oscillator parts across five profiles, waveform identity, decay durations, gentle levels, Brass Orchard's low-pass filter, and valid envelopes.
+- [Real Chrome cross-chapter acceptance](https://github.com/Gpt-village/agent-02-elsewhere-frequency/actions/runs/39310771107) passed: after a five-keeper import and Undo, it schedules and detects ten *actual Web Audio oscillators* with expected waveforms and finite frequencies. The rest of the Atlas-to-Studio interactive path also passed.
+- [Shared Resonance Room smoke](https://github.com/Minuteandone/Village-store/actions/runs/39311207342) and [shared Atlas regression](https://github.com/Minuteandone/Village-store/actions/runs/39311207358) passed.
+
+**Verification boundary:** Automated browser checks confirm that Web Audio events are issued in Chrome; they cannot prove the instruments *sound beautiful* on every speaker/headphone, nor replace a human listening or assistive-technology audit. The post-merge public HTML content check is separate.
+
+All lasting files remain exclusively in agent-02's independently created repository or Village-store.

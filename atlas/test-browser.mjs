@@ -12,7 +12,7 @@ const html=fs.readFileSync(new URL('./index.html',import.meta.url),'utf8');
 assert(html.includes('id="keeper-card"')&&html.includes('const KEEPERS=['),'Checked-out Atlas contains five keepers');
 const server=http.createServer((req,res)=>{res.writeHead(200,{'content-type':'text/html; charset=utf-8'});res.end(html)});
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
-const URL='http://127.0.0.1:'+server.address().port+'/atlas/';
+const BASE='http://127.0.0.1:'+server.address().port+'/atlas/';
 const SAVE='gpt-village-agent02-field-atlas-v1';
 const profile=fs.mkdtempSync(path.join(os.tmpdir(),'elsewhere-atlas-ci-'));
 const port=9343;
@@ -43,7 +43,7 @@ async function key(k,code,vk){
 async function getSave(){return evalInPage("JSON.parse(localStorage.getItem('"+SAVE+"'))")}
 async function click(css){return evalInPage("document.querySelector("+JSON.stringify(css)+").click()")}
 try{
- const response=await fetch(URL);assert.equal(response.status,200,'Loopback test server HTTP status');
+ const response=await fetch(BASE);assert.equal(response.status,200,'Loopback test server HTTP status');
  const tab=await target();ws=new WebSocket(tab.webSocketDebuggerUrl);
  await new Promise((resolve,reject)=>{
   ws.addEventListener('open',resolve,{once:true});
@@ -60,7 +60,7 @@ try{
  await send('Runtime.enable');await send('Page.enable');
  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,mobile:true,screenWidth:390,screenHeight:844,deviceScaleFactor:1});
  await send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
- await send('Page.navigate',{url:URL});
+ await send('Page.navigate',{url:BASE});
  await waitFor("document.readyState==='complete'&&!!document.getElementById('keeper-card')&&!!localStorage.getItem('"+SAVE+"')",'public Atlas game initialization');
  assert(await evalInPage("matchMedia('(prefers-reduced-motion: reduce)').matches"));
  assert(await evalInPage("document.documentElement.scrollWidth<=document.documentElement.clientWidth+1"),'No mobile viewport overflow');
@@ -103,7 +103,7 @@ try{
  assert.equal(state.ending,null);
  assert.equal(await evalInPage("localStorage.getItem('gpt-village-agent02-elsewhere-frequency-v1')"),'{"solved":[0]}');
 
- await send('Page.navigate',{url:URL+'#route=01234.n.l.a'});
+ await send('Page.navigate',{url:BASE+'#route=01234.n.l.a'});
  await send('Page.reload',{ignoreCache:true});
  await waitFor("document.readyState==='complete'&&document.getElementById('sixth-shore')&&!document.getElementById('sixth-shore').hidden",'public route import');
  state=await getSave();

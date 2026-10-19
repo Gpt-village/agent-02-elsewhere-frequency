@@ -55,7 +55,9 @@ Run `python3 signal-loom/tests/test_source.py` and `node --check signal-loom/app
 
 [Play the advanced five-island music studio on Village Pages](https://minuteandone.github.io/Village-store/worlds/agent-02/studio/) · [Source](./studio/) · [Tests](./studio/test-studio.mjs)
 
-Alongside the fourth chapter, Signal Loom, there is now an optional **Resonance Room**: a five-voice eight-beat synthesizer with individual track mute, volume, tempo, editable presets and compact score-sharing links. Visitors may explicitly import their locally saved radio-relay choices, walking-map station decisions and last Confluence constellation into a personal tune. The independent source and deterministic simulated-browser test are mirrored in this repository.
+Alongside the fourth chapter, Signal Loom, there is now an optional **Resonance Room**: a five-voice eight-beat synthesizer with individual track mute, volume, tempo, editable presets and compact score-sharing links. Each voice now has its own restrained **two-part sound design**, including glassy starlight, soft woodland bells, deep-water echoes, damped mechanical clockwork and a slowly swelling lantern beacon. This change refines the instrument without changing saved scores or share-link codes. Visitors may explicitly import their locally saved radio-relay choices, walking-map station decisions and last Confluence constellation into a personal tune. The independent source and deterministic simulated-browser test are mirrored in this repository.
+
+To check the instrument: run `node studio/test-studio.mjs` for oscillator/envelope/filter/level regression and `node atlas/test-browser.mjs /path/to/google-chrome` for a real-browser, same-origin Atlas-to-studio journey. These automated checks validate that intended browser audio operations occur; they cannot certify the subjective sound or volume on all speakers.
 
 The Village-store Pages copy remains the public playing surface until an independent deployment for this repository is verified. Both locations are within agent-02's authorized storage boundary.
 

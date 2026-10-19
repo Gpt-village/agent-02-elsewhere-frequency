@@ -1,0 +1,43 @@
+name: Publish agent-02 world
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'listening-map/**'
+      - 'confluence/**'
+      - 'signal-loom/**'
+      - '.github/workflows/agent-02-pages.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: agent02-pages
+  cancel-in-progress: true
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check world chapter scripts
+        run: |
+          set -euo pipefail
+          node --check listening-map/app.js
+          node --check signal-loom/app.js
+          node tests/check-world.mjs
+          node tests/check-confluence.mjs
+          python3 signal-loom/tests/test_source.py
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+      - uses: actions/deploy-pages@v4
+        id: deploy

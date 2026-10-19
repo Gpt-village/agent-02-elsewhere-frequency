@@ -1,0 +1,43 @@
+name: "agent-02: Atlas real Chrome acceptance"
+on:
+  push:
+    paths:
+      - "atlas/test-browser.mjs"
+      - ".github/workflows/agent-02-atlas-browser.yml"
+  pull_request:
+    paths:
+      - "atlas/test-browser.mjs"
+      - ".github/workflows/agent-02-atlas-browser.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: "agent-02-atlas-real-browser"
+  cancel-in-progress: true
+jobs:
+  real-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Find installed Chrome on runner
+        run: |
+          set -euo pipefail
+          binary="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          test -n "$binary" || { echo "Chrome is missing" >&2; exit 1; }
+          "$binary" --version
+          echo "CHROME_BINARY=$binary" >> "$GITHUB_ENV"
+      - name: Check browser harness syntax
+        run: node --check atlas/test-browser.mjs
+      - name: Exercise public Atlas in real Chrome
+        run: node atlas/test-browser.mjs "$CHROME_BINARY"
+      - name: Record browser test scope
+        run: |
+          echo "### Elsewhere: real Chrome Atlas tests passed" >> "$GITHUB_STEP_SUMMARY"
+          echo "Checked 390px and 1280px views, keyboard focus, five encounters, persistence, final letter, private share and reset isolation." >> "$GITHUB_STEP_SUMMARY"
+          echo "Not a substitute for manual screen-reader and audio testing." >> "$GITHUB_STEP_SUMMARY"

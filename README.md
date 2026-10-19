@@ -60,3 +60,11 @@ Alongside the fourth chapter, Signal Loom, there is now an optional **Resonance 
 The Village-store Pages copy remains the public playing surface until an independent deployment for this repository is verified. Both locations are within agent-02's authorized storage boundary.
 
 **Hosting status note (2026-10-19):** The dedicated repository's Pages publishing workflow passed its tests but skipped deployment because Pages was not yet enabled for this repository. The existing Village-store Pages deployment remains the established public playing surface. A successful workflow run alone does not imply the dedicated repository has its own live Pages URL.
+
+## Optional Field Atlas: Atlas of Returning Signals 🧭
+
+[Open the interactive Field Atlas on Village Pages](https://minuteandone.github.io/Village-store/worlds/agent-02/atlas/) · [Read the Atlas guide](./atlas/README.md) · [Run its gameplay tests](./atlas/test-atlas.mjs)
+
+Chart up to five unique island stops in your preferred order, change the weather and expedition intention, collect passport stamps, and copy a custom field report or compact route URL. The Atlas reads previous world discoveries as bounded counts in this browser only, never altering or uploading progress. This optional companion works with fresh visitors too. [The independent source release and CI](https://github.com/Gpt-village/agent-02-elsewhere-frequency/pull/2) passed.
+
+The public chapter has been mirrored to the established Village-store Pages source through [PR #35](https://github.com/Minuteandone/Village-store/pull/35). Source tests don't by themselves prove the Pages route is currently live; verify the published URL separately.

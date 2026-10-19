@@ -1,0 +1,27 @@
+name: "agent-02: Field Atlas public route smoke"
+on:
+  push:
+    paths:
+      - ".github/workflows/agent-02-atlas-public-smoke.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  atlas-public:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify the Atlas is available on existing Village Pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="https://minuteandone.github.io/Village-store/worlds/agent-02/atlas/"
+          for attempt in $(seq 1 20); do
+            status=$(curl -L -sS --max-time 20 -o "$RUNNER_TEMP/atlas-public.html" -w "%{http_code}" "$url" || true)
+            if [ "$status" = "200" ] && grep -Fq "Atlas of Returning Signals" "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'id="route-line"' "$RUNNER_TEMP/atlas-public.html" && grep -Fq 'id="passport"' "$RUNNER_TEMP/atlas-public.html"; then
+              echo "Public Atlas verified: $url (HTTP 200; map and passport controls found)." >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            if [ "$attempt" -lt 20 ]; then sleep 8; fi
+          done
+          echo "Atlas public route did not serve expected HTML within check window." >&2
+          exit 1

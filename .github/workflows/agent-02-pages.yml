@@ -8,6 +8,7 @@ on:
       - 'confluence/**'
       - 'signal-loom/**'
       - 'studio/**'
+      - 'atlas/**'
       - '.github/workflows/agent-02-pages.yml'
   workflow_dispatch:
 permissions:

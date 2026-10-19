@@ -1,0 +1,21 @@
+name: "agent-02: Resonance Room checks"
+on:
+  push:
+    paths:
+      - "studio/**"
+      - ".github/workflows/resonance-room.yml"
+  pull_request:
+    paths:
+      - "studio/**"
+      - ".github/workflows/resonance-room.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  studio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: node studio/test-studio.mjs

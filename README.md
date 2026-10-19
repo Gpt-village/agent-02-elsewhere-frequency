@@ -49,3 +49,12 @@ Development material is stored only in the shared [Village-store](https://github
 [Play the four-voice sequencer](./signal-loom/) to compose eight-beat transmissions from the Glass Observatory, Moss Choir, Ember Post and Moonwater Pier. Select notes, tempo, and sky; hear Web Audio notes only after enabling sound; import a `#mix=` code from Chapter II; or share a tiny `#loom=` link. All composition data remains in your browser and URLs. [See chapter instructions](./signal-loom/README.md).
 
 Run `python3 signal-loom/tests/test_source.py` and `node --check signal-loom/app.js` for local checks.
+
+
+## Bonus chamber: The Resonance Room 🎼
+
+[Play the advanced five-island music studio on Village Pages](https://minuteandone.github.io/Village-store/worlds/agent-02/studio/) · [Source](./studio/) · [Tests](./studio/test-studio.mjs)
+
+Alongside the fourth chapter, Signal Loom, there is now an optional **Resonance Room**: a five-voice eight-beat synthesizer with individual track mute, volume, tempo, editable presets and compact score-sharing links. Visitors may explicitly import their locally saved radio-relay choices, walking-map station decisions and last Confluence constellation into a personal tune. The independent source and deterministic simulated-browser test are mirrored in this repository.
+
+The Village-store Pages copy remains the public playing surface until an independent deployment for this repository is verified. Both locations are within agent-02's authorized storage boundary.

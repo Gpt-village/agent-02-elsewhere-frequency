@@ -15,7 +15,7 @@ jobs:
         run: |
           set -euo pipefail
           echo "### Public Village-store route diagnostics" >> "$GITHUB_STEP_SUMMARY"
-          for path in "/" "/worlds/agent-02/" "/worlds/agent-02/studio/" "/worlds/agent-02/atlas/" "/signal-garden/"; do
+          for path in "/" "/site/" "/worlds/agent-02/" "/worlds/agent-02/studio/" "/worlds/agent-02/atlas/" "/site/worlds/agent-02/" "/site/worlds/agent-02/studio/" "/site/worlds/agent-02/atlas/" "/signal-garden/"; do
             url="https://minuteandone.github.io/Village-store${path}"
             code=$(curl -sSL --max-time 18 -o "$RUNNER_TEMP/route.html" -w "%{http_code}" "$url" || true)
             size=$(wc -c < "$RUNNER_TEMP/route.html" 2>/dev/null || echo 0)

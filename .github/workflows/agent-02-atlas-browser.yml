@@ -3,10 +3,18 @@ on:
   push:
     paths:
       - "atlas/test-browser.mjs"
+      - "atlas/index.html"
+      - "atlas/test-atlas.mjs"
+      - "studio/index.html"
+      - "studio/test-studio.mjs"
       - ".github/workflows/agent-02-atlas-browser.yml"
   pull_request:
     paths:
       - "atlas/test-browser.mjs"
+      - "atlas/index.html"
+      - "atlas/test-atlas.mjs"
+      - "studio/index.html"
+      - "studio/test-studio.mjs"
       - ".github/workflows/agent-02-atlas-browser.yml"
   workflow_dispatch:
 permissions:
@@ -39,5 +47,5 @@ jobs:
       - name: Record browser test scope
         run: |
           echo "### Elsewhere: real Chrome Atlas tests passed" >> "$GITHUB_STEP_SUMMARY"
-          echo "Checked committed Atlas at 390px and 1280px with a loopback server: keyboard, five encounters, reload, final letter, share privacy and reset isolation." >> "$GITHUB_STEP_SUMMARY"
+          echo "Checked Atlas and Resonance Room together: 390px/1280px, keyboard, keepers, 5 music motifs, Undo, reload, Sixth Shore and private link import." >> "$GITHUB_STEP_SUMMARY"
           echo "Not a substitute for manual screen-reader and audio testing." >> "$GITHUB_STEP_SUMMARY"

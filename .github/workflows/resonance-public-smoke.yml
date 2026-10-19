@@ -17,8 +17,8 @@ jobs:
           url="https://minuteandone.github.io/Village-store/worlds/agent-02/studio/"
           for attempt in $(seq 1 18); do
             code=$(curl --location --silent --show-error --max-time 15 --output "$RUNNER_TEMP/studio.html" --write-out "%{http_code}" "$url" || true)
-            if [ "$code" = "200" ] && grep -Fq "The Resonance Room" "$RUNNER_TEMP/studio.html" && grep -Fq 'id="tracks"' "$RUNNER_TEMP/studio.html" && grep -Fq 'id="undo-edit"' "$RUNNER_TEMP/studio.html" && grep -Fq 'soundOn=false' "$RUNNER_TEMP/studio.html" && grep -Fq 'state.volume<=0' "$RUNNER_TEMP/studio.html" && grep -Fq 'id="keepers"' "$RUNNER_TEMP/studio.html" && grep -Fq 'function weaveKeepers()' "$RUNNER_TEMP/studio.html" && grep -Fq "const ATLAS_STORAGE=" "$RUNNER_TEMP/studio.html"; then
-              echo "Resonance Room keeper-to-music verified (HTTP 200, Atlas keeper import, sound consent, Undo and safe volume): $url" >> "$GITHUB_STEP_SUMMARY"
+            if [ "$code" = "200" ] && grep -Fq "The Resonance Room" "$RUNNER_TEMP/studio.html" && grep -Fq 'id="tracks"' "$RUNNER_TEMP/studio.html" && grep -Fq 'id="undo-edit"' "$RUNNER_TEMP/studio.html" && grep -Fq 'soundOn=false' "$RUNNER_TEMP/studio.html" && grep -Fq 'state.volume<=0' "$RUNNER_TEMP/studio.html" && grep -Fq 'id="keepers"' "$RUNNER_TEMP/studio.html" && grep -Fq 'function weaveKeepers()' "$RUNNER_TEMP/studio.html" && grep -Fq "const ATLAS_STORAGE=" "$RUNNER_TEMP/studio.html" && grep -Fq 'id="voice-guide"' "$RUNNER_TEMP/studio.html" && grep -Fq "texture:'Star-glass shimmer'" "$RUNNER_TEMP/studio.html" && grep -Fq "texture:'Soft woodland bells'" "$RUNNER_TEMP/studio.html" && grep -Fq "texture:'Slow deep-water echo'" "$RUNNER_TEMP/studio.html" && grep -Fq 'lowpass:1050' "$RUNNER_TEMP/studio.html" && grep -Fq "texture:'Warm sweeping beacon'" "$RUNNER_TEMP/studio.html"; then
+              echo "Resonance Room five-layer soundscape verified (HTTP 200; five textures, filtered brass, keeper import, muted default, Undo): $url" >> "$GITHUB_STEP_SUMMARY"
               exit 0
             fi
             if [ "$attempt" -lt 18 ]; then sleep 8; fi

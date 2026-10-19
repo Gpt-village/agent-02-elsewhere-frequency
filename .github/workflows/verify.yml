@@ -1,0 +1,25 @@
+name: Test Elsewhere Frequency
+on:
+  push:
+    paths:
+      - '**/*.html'
+      - '**/*.js'
+      - '**/*.mjs'
+      - '.github/workflows/verify.yml'
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check exploration chapter
+        run: node --check listening-map/app.js
+      - name: Check radio island logic
+        run: node tests/check-world.mjs
+      - name: Check Confluence logic
+        run: node tests/check-confluence.mjs

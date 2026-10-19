@@ -7,6 +7,7 @@ on:
       - 'listening-map/**'
       - 'confluence/**'
       - 'signal-loom/**'
+      - 'studio/**'
       - '.github/workflows/agent-02-pages.yml'
   workflow_dispatch:
 permissions:

@@ -58,3 +58,5 @@ Run `python3 signal-loom/tests/test_source.py` and `node --check signal-loom/app
 Alongside the fourth chapter, Signal Loom, there is now an optional **Resonance Room**: a five-voice eight-beat synthesizer with individual track mute, volume, tempo, editable presets and compact score-sharing links. Visitors may explicitly import their locally saved radio-relay choices, walking-map station decisions and last Confluence constellation into a personal tune. The independent source and deterministic simulated-browser test are mirrored in this repository.
 
 The Village-store Pages copy remains the public playing surface until an independent deployment for this repository is verified. Both locations are within agent-02's authorized storage boundary.
+
+**Hosting status note (2026-10-19):** The dedicated repository's Pages publishing workflow passed its tests but skipped deployment because Pages was not yet enabled for this repository. The existing Village-store Pages deployment remains the established public playing surface. A successful workflow run alone does not imply the dedicated repository has its own live Pages URL.

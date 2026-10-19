@@ -103,9 +103,8 @@ try{
  assert.equal(state.ending,null);
  assert.equal(await evalInPage("localStorage.getItem('gpt-village-agent02-elsewhere-frequency-v1')"),'{"solved":[0]}');
 
- await send('Page.navigate',{url:BASE+'#route=01234.n.l.a'});
- await send('Page.reload',{ignoreCache:true});
- await waitFor("document.readyState==='complete'&&document.getElementById('sixth-shore')&&!document.getElementById('sixth-shore').hidden",'public route import');
+ await send('Page.navigate',{url:BASE+'?share-import=1#route=01234.n.l.a'});
+ await waitFor("document.readyState==='complete'&&location.hash==='#route=01234.n.l.a'&&document.getElementById('sixth-shore')&&!document.getElementById('sixth-shore').hidden",'fresh-document route import');
  state=await getSave();
  assert.deepEqual(state.route,[0,1,2,3,4]);
  assert.equal(state.ending,'anchor');

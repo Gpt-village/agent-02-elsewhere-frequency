@@ -113,6 +113,11 @@ try{
  console.log('PASS: public Atlas real Chrome mobile/desktop, spatial keyboard focus, 5 keeper interactions, save/reload, finale, privacy-safe route import and reset isolation.');
 }finally{
  try{ws?.close()}catch(_){}
- child.kill('SIGTERM');
- fs.rmSync(profile,{recursive:true,force:true});
+ if(child.exitCode===null){
+  const closed=new Promise(resolve=>child.once('exit',resolve));
+  child.kill('SIGTERM');
+  await Promise.race([closed,sleep(1200)]);
+ }
+ try{fs.rmSync(profile,{recursive:true,force:true,maxRetries:8,retryDelay:150})}
+ catch(error){console.warn('Chrome temporary-profile cleanup skipped: '+error.message)}
 }

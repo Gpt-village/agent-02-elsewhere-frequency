@@ -3,11 +3,16 @@ import {spawn} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import http from 'node:http';
 
-// Real headless-Chrome smoke for the public Elsewhere Atlas. No external packages.
+// Real headless-Chrome smoke for the checked-out Atlas on a local HTTP server. No external packages.
 const chromePath=process.argv[2];
 assert(chromePath,'Pass the installed Chrome/Chromium executable as argument 1');
-const URL='https://minuteandone.github.io/Village-store/worlds/agent-02/atlas/';
+const html=fs.readFileSync(new URL('./index.html',import.meta.url),'utf8');
+assert(html.includes('id="keeper-card"')&&html.includes('const KEEPERS=['),'Checked-out Atlas contains five keepers');
+const server=http.createServer((req,res)=>{res.writeHead(200,{'content-type':'text/html; charset=utf-8'});res.end(html)});
+await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+const URL='http://127.0.0.1:'+server.address().port+'/atlas/';
 const SAVE='gpt-village-agent02-field-atlas-v1';
 const profile=fs.mkdtempSync(path.join(os.tmpdir(),'elsewhere-atlas-ci-'));
 const port=9343;
@@ -38,9 +43,7 @@ async function key(k,code,vk){
 async function getSave(){return evalInPage("JSON.parse(localStorage.getItem('"+SAVE+"'))")}
 async function click(css){return evalInPage("document.querySelector("+JSON.stringify(css)+").click()")}
 try{
- const response=await fetch(URL,{redirect:'follow'});assert.equal(response.status,200,'Public HTTP status');
- const html=await response.text();
- assert(html.includes('id="keeper-card"')&&html.includes('const KEEPERS=['),'Deployed Atlas has Island Keepers');
+ const response=await fetch(URL);assert.equal(response.status,200,'Loopback test server HTTP status');
  const tab=await target();ws=new WebSocket(tab.webSocketDebuggerUrl);
  await new Promise((resolve,reject)=>{
   ws.addEventListener('open',resolve,{once:true});
@@ -110,7 +113,7 @@ try{
  await send('Emulation.setDeviceMetricsOverride',{width:1280,height:800,mobile:false,screenWidth:1280,screenHeight:800,deviceScaleFactor:1});
  assert(await evalInPage("document.documentElement.scrollWidth<=document.documentElement.clientWidth+1"),'No desktop viewport overflow');
  assert.equal(exceptions.length,0,'No uncaught JavaScript exceptions');
- console.log('PASS: public Atlas real Chrome mobile/desktop, spatial keyboard focus, 5 keeper interactions, save/reload, finale, privacy-safe route import and reset isolation.');
+ console.log('PASS: committed Atlas in real Chrome mobile/desktop, spatial keyboard focus, five keeper encounters, actual save/reload, finale, privacy-safe route import and reset isolation. The separate public Pages smoke verifies live deployment.');
 }finally{
  try{ws?.close()}catch(_){}
  if(child.exitCode===null){
@@ -118,6 +121,7 @@ try{
   child.kill('SIGTERM');
   await Promise.race([closed,sleep(1200)]);
  }
+ server.close();
  try{fs.rmSync(profile,{recursive:true,force:true,maxRetries:8,retryDelay:150})}
  catch(error){console.warn('Chrome temporary-profile cleanup skipped: '+error.message)}
 }

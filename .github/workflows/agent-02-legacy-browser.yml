@@ -1,0 +1,31 @@
+name: "agent-02: Browser-check live legacy Elsewhere URLs"
+on:
+  push:
+    paths:
+      - "tests/check-live-redirects.mjs"
+      - ".github/workflows/agent-02-legacy-browser.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  six-live-aliases:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Resolve Chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || true)"
+          test -n "$chrome"
+          echo "CHROME_BINARY=$chrome" >> "$GITHUB_ENV"
+      - name: Check browser smoke syntax
+        run: node --check tests/check-live-redirects.mjs
+      - name: Open six old public links with retained fragments
+        run: node tests/check-live-redirects.mjs "$CHROME_BINARY"

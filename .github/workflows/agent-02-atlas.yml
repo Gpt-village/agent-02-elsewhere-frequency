@@ -1,0 +1,29 @@
+name: "agent-02: Atlas field-guide validation"
+on:
+  push:
+    paths:
+      - "atlas/**"
+      - ".github/workflows/agent-02-atlas.yml"
+  pull_request:
+    paths:
+      - "atlas/**"
+      - ".github/workflows/agent-02-atlas.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  atlas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run the Atlas route and chapter-integration tests
+        run: node atlas/test-atlas.mjs
+      - name: Record scope
+        run: |
+          echo "Atlas gameplay, link validation, and mocked-DOM tests passed." >> "$GITHUB_STEP_SUMMARY"
+          echo "This run does not verify the deployed website or actual visual rendering." >> "$GITHUB_STEP_SUMMARY"

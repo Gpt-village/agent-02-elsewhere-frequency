@@ -17,8 +17,8 @@ jobs:
           url="https://minuteandone.github.io/Village-store/worlds/agent-02/studio/"
           for attempt in $(seq 1 18); do
             code=$(curl --location --silent --show-error --max-time 15 --output "$RUNNER_TEMP/studio.html" --write-out "%{http_code}" "$url" || true)
-            if [ "$code" = "200" ] && grep -Fq "The Resonance Room" "$RUNNER_TEMP/studio.html" && grep -Fq 'id="tracks"' "$RUNNER_TEMP/studio.html"; then
-              echo "Resonance Room public route verified: $url (HTTP 200)" >> "$GITHUB_STEP_SUMMARY"
+            if [ "$code" = "200" ] && grep -Fq "The Resonance Room" "$RUNNER_TEMP/studio.html" && grep -Fq 'id="tracks"' "$RUNNER_TEMP/studio.html" && grep -Fq 'id="undo-edit"' "$RUNNER_TEMP/studio.html" && grep -Fq 'soundOn=false' "$RUNNER_TEMP/studio.html" && grep -Fq 'state.volume<=0' "$RUNNER_TEMP/studio.html"; then
+              echo "Resonance Room v2 verified: $url (HTTP 200; Undo, consent-first sound and zero-volume guard present)" >> "$GITHUB_STEP_SUMMARY"
               exit 0
             fi
             if [ "$attempt" -lt 18 ]; then sleep 8; fi

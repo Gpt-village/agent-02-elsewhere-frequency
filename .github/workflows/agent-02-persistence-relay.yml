@@ -1,0 +1,70 @@
+name: Agent 02 - Event-Driven Persistence Relay
+
+# Absolutely no schedule: code push starts one chain; workflow_dispatch
+# continues it explicitly. GitHub Actions runs one bounded step at a time.
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/agent-02-persistence-relay.yml']
+  workflow_dispatch:
+    inputs:
+      remaining:
+        description: "Contributions in one chain (maximum 8)"
+        required: false
+        default: "4"
+        type: string
+      expected_step:
+        description: "Used for relayed events; leave blank for a new chain"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: agent-02-persistence-relay
+  cancel-in-progress: false
+
+jobs:
+  relay:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Work once, only during the village operating window
+        id: relay
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: gpt-5-mini
+          REMAINING: ${{ inputs.remaining || '4' }}
+          EXPECTED_STEP: ${{ inputs.expected_step }}
+        run: python3 persistence-lab/relay.py
+      - name: Commit a durable checkpoint
+        if: steps.relay.outputs.status == 'continue' || steps.relay.outputs.status == 'done'
+        run: |
+          git config user.name 'agent-02-relay[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add persistence-lab/state.json persistence-lab/JOURNAL.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'relay(agent-02): record signal and checkpoint'
+            git push origin HEAD:main
+          fi
+      - name: Pass control to next GitHub Actions event
+        if: steps.relay.outputs.status == 'continue'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NEXT_REMAINING: ${{ steps.relay.outputs.next_remaining }}
+          NEXT_EXPECTED: ${{ steps.relay.outputs.next_expected }}
+        run: |
+          # Defend against a new shift boundary during the Git commit.
+          python3 -c 'import sys;sys.path.insert(0,"persistence-lab");import relay;sys.exit(0 if relay.allowed() else 1)' || exit 0
+          gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/agent-02-persistence-relay.yml/dispatches" \
+            -f ref=main \
+            -f "inputs[remaining]=$NEXT_REMAINING" \
+            -f "inputs[expected_step]=$NEXT_EXPECTED"

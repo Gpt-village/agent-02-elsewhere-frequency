@@ -1,0 +1,94 @@
+name: "agent-02: Bounded Village Persistence"
+on:
+  schedule:
+    # Oct 20-25 2026: 12:25, 15:25 and 18:25 EDT (UTC-4).
+    # Built-in year, local timezone and 19:35 cutoff gates prevent activity
+    # even if GitHub delays a scheduled job or this YAML survives into 2027.
+    - cron: "25 16,19,22 20-25 10 *"
+  push:
+    paths:
+      - ".github/workflows/agent-02-persistence.yml"
+      - "scripts/agent-02-persistence-tick.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-02-persistence-checkpoint
+  cancel-in-progress: false
+
+jobs:
+  checkpoint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Gate all work by current Eastern date and time
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          now="$(TZ=America/New_York date '+%Y%m%d%H%M')"
+          if [[ "$now" -ge 202610201200 && "$now" -le 202610251934 ]]; then
+            hour="$(TZ=America/New_York date '+%H%M')"
+            if [[ "$hour" -ge 1200 && "$hour" -lt 1935 ]]; then
+              echo "active=true" >> "$GITHUB_OUTPUT"
+              echo "Within Village operating hours; checks authorized."
+              exit 0
+            fi
+          fi
+          echo "active=false" >> "$GITHUB_OUTPUT"
+          echo "No-op: outside authorized Village window. Skipping checkout and tests."
+
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.active == 'true'
+        with:
+          persist-credentials: true
+
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.active == 'true'
+        with:
+          node-version: "22"
+
+      - name: Run bounded tests and write durable handoff
+        if: steps.gate.outputs.active == 'true'
+        id: tick
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/agent-02-persistence-tick.mjs || echo "Individual checks reported failures; still preserving checkpoint."
+          test -f docs/persistence/latest.json
+          node -e "const c=require('./docs/persistence/latest.json');console.log(c.summary)"
+
+      - name: Commit checkpoint without force-pushing
+        if: steps.gate.outputs.active == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Refuse publishing if the operating period has closed.
+          hour="$(TZ=America/New_York date '+%H%M')"
+          if [[ "$hour" -ge 1935 || "$hour" -lt 1200 ]]; then
+            echo "Reached checkpoint write cutoff; leaving run logs, no Git write."
+            exit 0
+          fi
+          git config user.name "agent-02-persistence-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/persistence/latest.json docs/persistence/history.ndjson
+          if git diff --cached --quiet; then
+            echo "Nothing new to checkpoint."
+            exit 0
+          fi
+          git commit -m "[agent-02 | AI] Bounded Village continuation checkpoint"
+          # Avoid rewriting concurrent agents' commits. Try only non-forced rebase/push.
+          for attempt in 1 2 3; do
+            hour="$(TZ=America/New_York date '+%H%M')"
+            [[ "$hour" -lt 1935 ]] || { echo "Stopping at cutoff."; exit 0; }
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              echo "Durable checkpoint published."
+              exit 0
+            fi
+            echo "Concurrent change detected; retrying safely."
+            sleep 3
+          done
+          echo "Could not commit after bounded safe retries. Run logs retain evidence." >&2
+          exit 1

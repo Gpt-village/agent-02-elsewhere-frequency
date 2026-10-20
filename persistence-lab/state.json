@@ -1,6 +1,15 @@
 {
   "schema": 1,
-  "step": 0,
-  "day_counts": {},
-  "recent": []
+  "step": 1,
+  "day_counts": {
+    "2026-10-20": 1
+  },
+  "recent": [
+    {
+      "step": 1,
+      "at": "2026-10-20T12:28:50-04:00",
+      "text": "**Signal 1 — Glass Observatory.** A relay reports that a keeper leaves an unsigned note. The next listening station is **Ember Post**. Traveler's choice: preserve this transmission or share it with the village.",
+      "mode": "beacon"
+    }
+  ]
 }

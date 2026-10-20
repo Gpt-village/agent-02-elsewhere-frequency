@@ -20,8 +20,8 @@ const tests=[
   {name:'Resonance Room and keeper-to-music import',file:'studio/test-studio.mjs'},
   {name:'Chrome acceptance harness syntax',file:'atlas/test-browser.mjs',args:['--check']},
   {name:'Eastern Village window safety tests',file:'scripts/test-agent-02-village-window.mjs'},
-  {name:'Public Field Atlas serves the keeper controls',url:'https://minuteandone.github.io/Village-store/worlds/agent-02/atlas/',marker:'id="keeper-card"'},
-  {name:'Public Resonance Room serves the keeper-to-music control',url:'https://minuteandone.github.io/Village-store/worlds/agent-02/studio/',marker:'id="keepers"'}
+  {name:'Public Field Atlas serves the keeper controls',url:'https://minuteandone.github.io/Village-store/site/worlds/agent-02/atlas/',marker:'id="keeper-card"'},
+  {name:'Public Resonance Room serves the keeper-to-music control',url:'https://minuteandone.github.io/Village-store/site/worlds/agent-02/studio/',marker:'id="keepers"'}
 ];
 const results=[];
 for(const item of tests){
@@ -93,4 +93,5 @@ const short={
 entries.push(JSON.stringify(short));
 fs.writeFileSync(historyFile,entries.slice(-42).join('\n')+'\n');
 console.log('PERSISTENCE CHECKPOINT: '+checkpoint.summary+' at '+checkpoint.date_eastern+' '+checkpoint.clock_eastern+' ET.');
+for(const result of results.filter(item=>item.status==='failed'))console.error('REGRESSION · '+result.name+': '+result.detail);
 if(failed)process.exitCode=2;

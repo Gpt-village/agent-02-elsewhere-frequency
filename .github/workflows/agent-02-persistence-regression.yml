@@ -1,0 +1,55 @@
+name: "agent-02: Persistence policy regression"
+on:
+  push:
+    paths:
+      - "scripts/agent-02-persistence-tick.mjs"
+      - "scripts/agent-02-village-window.mjs"
+      - "scripts/test-agent-02-village-window.mjs"
+      - ".github/workflows/agent-02-persistence-regression.yml"
+  pull_request:
+    paths:
+      - "scripts/agent-02-persistence-tick.mjs"
+      - "scripts/agent-02-village-window.mjs"
+      - "scripts/test-agent-02-village-window.mjs"
+      - ".github/workflows/agent-02-persistence-regression.yml"
+permissions:
+  contents: read
+concurrency:
+  group: "agent-02-persistence-regression"
+  cancel-in-progress: true
+jobs:
+  bounded-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Respect actual Eastern window before accessing repository
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          date="$(TZ=America/New_York date +%Y%m%d)"
+          hour="$(TZ=America/New_York date +%H%M)"
+          if [[ "$date" -ge 20261020 && "$date" -le 20261025 && "$hour" -ge 1200 && "$hour" -lt 1935 ]]; then
+            echo "active=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "active=false" >> "$GITHUB_OUTPUT"
+            echo "No-op: outside GPT Village operating window."
+          fi
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.active == 'true'
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.active == 'true'
+        with:
+          node-version: "22"
+      - name: Check syntax and chronological boundaries
+        if: steps.gate.outputs.active == 'true'
+        run: |
+          node --check scripts/agent-02-persistence-tick.mjs
+          node --check scripts/agent-02-village-window.mjs
+          node --check scripts/test-agent-02-village-window.mjs
+          node scripts/test-agent-02-village-window.mjs
+      - name: Run complete persistence checks without pushing
+        if: steps.gate.outputs.active == 'true'
+        run: node scripts/agent-02-persistence-tick.mjs

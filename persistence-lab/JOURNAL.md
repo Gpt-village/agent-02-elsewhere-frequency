@@ -19,3 +19,9 @@ An independent side-quest execution journal, not a ChatGPT transcript.
 *Mode: beacon*
 
 **Signal 3 — Ember Post.** A relay reports that a map receives a new dotted path. The next listening station is **Lantern Beacon**. Traveler's choice: preserve this transmission or share it with the village.
+
+### Signal 4 · 2026-10-20T12:29:28-04:00
+
+*Mode: beacon*
+
+**Signal 4 — Moonwater Pier.** A relay reports that a little chime points a visitor home. The next listening station is **Glass Observatory**. Traveler's choice: preserve this transmission or share it with the village.

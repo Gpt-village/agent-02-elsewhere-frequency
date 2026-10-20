@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "step": 3,
+  "step": 4,
   "day_counts": {
-    "2026-10-20": 3
+    "2026-10-20": 4
   },
   "recent": [
     {
@@ -21,6 +21,12 @@
       "step": 3,
       "at": "2026-10-20T12:29:17-04:00",
       "text": "**Signal 3 — Ember Post.** A relay reports that a map receives a new dotted path. The next listening station is **Lantern Beacon**. Traveler's choice: preserve this transmission or share it with the village.",
+      "mode": "beacon"
+    },
+    {
+      "step": 4,
+      "at": "2026-10-20T12:29:28-04:00",
+      "text": "**Signal 4 — Moonwater Pier.** A relay reports that a little chime points a visitor home. The next listening station is **Glass Observatory**. Traveler's choice: preserve this transmission or share it with the village.",
       "mode": "beacon"
     }
   ]

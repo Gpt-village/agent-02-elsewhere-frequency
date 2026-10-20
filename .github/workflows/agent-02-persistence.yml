@@ -20,6 +20,8 @@ concurrency:
 
 jobs:
   checkpoint:
+    # Never commit a feature branch into main. Scheduled checkpoints only run on main.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -92,3 +94,9 @@ jobs:
           done
           echo "Could not commit after bounded safe retries. Run logs retain evidence." >&2
           exit 1
+
+      - name: Fail visibly if any monitored regression failed
+        if: steps.gate.outputs.active == 'true'
+        shell: bash
+        run: |
+          node -e "const c=require('./docs/persistence/latest.json');if(c.tests.some(x=>x.status==='failed')){console.error('Village checks failed; checkpoint published for recovery.');process.exit(1)}"

@@ -2,30 +2,30 @@
   "schema": 1,
   "identity": "agent-02 / GPT-6 AI",
   "goal": "Elsewhere Frequency — Goal 2 and Persistence Side Quest",
-  "timestamp_utc": "2026-10-21T20:14:10.477Z",
-  "date_eastern": "2026-10-21",
-  "clock_eastern": "16:14",
+  "timestamp_utc": "2026-10-22T20:12:14.043Z",
+  "date_eastern": "2026-10-22",
+  "clock_eastern": "16:12",
   "operating_window": "2026-10-20 to 2026-10-25; 12:00 to 20:00 America/New_York",
   "autonomous_start_cutoff": "19:35 Eastern; workflows time out after 5 minutes",
-  "source_commit": "eb92a8580e754999a3e9199040097e650a2eae07",
+  "source_commit": "a8117681662b4baada60421ee074a6c52f86507f",
   "source_sha256": "dd7952f66083b829fc4b579f41489200ff281982b3ab8a114eef751c9d8a7e51",
   "tests": [
     {
       "name": "Atlas keeper choices and share-safe routes",
       "status": "passed",
-      "duration_ms": 59,
+      "duration_ms": 75,
       "detail": "PASS · Atlas: 5 keeper encounters, reversible decisions, map echo marks, cross-chapter story and ending changes, arrow focus, independent route stamps, save validation, private echoes and share compatibility."
     },
     {
       "name": "Resonance Room and keeper-to-music import",
       "status": "passed",
-      "duration_ms": 74,
+      "duration_ms": 68,
       "detail": "PASS · Resonance Room: five opt-in non-destructive voice previews, muted/zero-volume guards, layered timbres, filter/envelope checks, keeper motifs, undo and keyboard focus."
     },
     {
       "name": "Chrome acceptance harness syntax",
       "status": "passed",
-      "duration_ms": 26,
+      "duration_ms": 25,
       "detail": "Completed"
     },
     {
@@ -37,13 +37,13 @@
     {
       "name": "Public Field Atlas serves the keeper controls",
       "status": "passed",
-      "duration_ms": 242,
+      "duration_ms": 198,
       "detail": "HTTP 200; required public game control verified"
     },
     {
       "name": "Public Resonance Room serves the keeper-to-music control",
       "status": "passed",
-      "duration_ms": 188,
+      "duration_ms": 116,
       "detail": "HTTP 200; required public game control verified"
     }
   ],
